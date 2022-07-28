@@ -90,7 +90,7 @@ setup(
         "scikit_learn>=1.1.1",
         "tqdm>=4.64.0"
     ],
-    python_requires=">=3.7",
+    python_requires=">=3.8",
     license="MIT License",
     classifiers=[
         "Intended Audience :: Education",
