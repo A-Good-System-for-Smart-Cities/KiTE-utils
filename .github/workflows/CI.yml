@@ -1,0 +1,32 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-latest, ubuntu-latest]
+        python-version: [3.8, 3.9]
+    name: Test - ${{ matrix.os }}, ${{ matrix.python-version }}
+    runs-on: ${{ matrix.os }}
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Build
+      run: |
+        pip install --upgrade build
+        pip install --upgrade wheel
+        python -m build
+    - name: Run Pytest
+      run: |
+        pip install -e .
+        pip install pytest
+        pip install nbmake
+        pip install pytest-cov
+        pytest -vv --cov-config=.coveragerc --cov=KiTE_utils KiTE_utils/tests/
