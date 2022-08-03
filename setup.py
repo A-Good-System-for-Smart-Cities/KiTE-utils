@@ -88,7 +88,7 @@ setup(
         "netcal>=1.2.1",
         "numpy>=1.22.4",
         "scikit_learn>=1.1.1",
-        "tqdm>=4.64.0"
+        "tqdm>=4.64.0",
     ],
     python_requires=">=3.8",
     license="MIT License",
