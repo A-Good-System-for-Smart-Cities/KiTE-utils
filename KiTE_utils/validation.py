@@ -1,5 +1,5 @@
-import pandas as pd
 from KiTE_utils import no_none_arg
+
 
 @no_none_arg
 def check_attributes(X, e, iterations=1000, n_jobs=1):

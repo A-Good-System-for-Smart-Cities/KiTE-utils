@@ -1,10 +1,13 @@
-import numpy as np
 from joblib import Parallel, delayed
 from sklearn.gaussian_process.kernels import pairwise_kernels
 from tqdm import tqdm
+from KiTE_utils import no_none_arg
 from KiTE_utils.validation import check_attributes
 import logging
+import numpy as np
 
+
+@no_none_arg
 def ELCE2_estimator(K_xx, err):
     """
     The estimator $ELCE^2 = \sum (e Kxx e^T) / n / (n-1)$
@@ -25,6 +28,7 @@ def ELCE2_estimator(K_xx, err):
     return K.sum() - K.diagonal().sum()  # / (size * (size-1.0))
 
 
+@no_none_arg
 def ELCE2_normalization(K):
     """
     The normalization of estimator ELCE^2 = \sum (1 x Kxx x 1T) / n / (n-1)
@@ -44,6 +48,7 @@ def ELCE2_normalization(K):
     return (size - 1.0) * K.sum() / size  # - K.diagonal().sum()
 
 
+@no_none_arg
 def ELCE2_null_estimator(err, K, rng):
     """
     Compute the ELCE^2_u for one bootstrap realization.
@@ -69,6 +74,7 @@ def ELCE2_null_estimator(err, K, rng):
     return ELCE2_estimator(K, err[idx])
 
 
+@no_none_arg
 def _calculate_err_vector(Y, p):
     return Y - p
 
@@ -179,6 +185,7 @@ def ELCE2(
         - second element is samples from the null distribution via a bootstraps algorithm,
         - third element is the estimated p-value.
     """
+
     def create_kernel():
         """
         Returns: A kernel matrix K such that K_{i, j} is the kernel between the ith and jth vectors of the given matrix X, if Y is None.
