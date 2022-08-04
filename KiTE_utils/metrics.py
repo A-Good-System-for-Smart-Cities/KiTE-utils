@@ -5,6 +5,10 @@ from tqdm import tqdm
 from KiTE_utils.validation import check_attributes
 import logging
 
+import decorator
+
+
+
 
 def ELCE2_estimator(K_xx, err):
     """
@@ -133,6 +137,53 @@ def ELCE2(
     n_jobs=1,
     **kwargs,
 ):
+    """
+    This function estimate ELCE^2_u employing a kernel trick. ELCE^2_u tests if a proposed posterior credible interval
+    is calibrated employing a randomly drawn calibration test. The null hypothesis is that the posteriors are
+    properly calibrated This function perform a bootstrap algorithm to estimate the null distribution,
+    and corresponding p-value.
+
+    Parameters
+    ----------
+        X: numpy-array
+            data, of size NxD [N is the number of data points, D is the features dimension]
+
+        Y: numpy-array
+            credible error vector, of size Nx1 [N is the number of data points]
+
+        p: numpy-array
+            probability vector, of size Nx1 [N is the number of data points]
+
+        kernel_function: string
+            defines the kernel function. For the list of implemented kernel please consult with
+            https://scikit-learn.org/stable/modules/generated/sklearn.metrics.pairwise.kernel_metrics.html#sklearn.metrics.pairwise.kernel_metrics
+
+        prob_kernel_wdith: float
+            Width of the probably kernel function.
+
+        iterations: int
+            controls the number of bootstrap realizations
+
+        verbose: bool
+            controls the verbosity of the model's output.
+
+        random_state: type(np.random.RandomState()) or None
+            defines the initial random state.
+
+        n_jobs: int
+            number of jobs to run in parallel.
+
+        **kwargs:
+            extra parameters, these are passed to `pairwise_kernels()` as kernel parameters o
+            as the number of k. E.g., if `kernel_two_sample_test(..., kernel_function='rbf', gamma=0.1)`
+
+    return
+    ----------
+    tuple of size 1 -- if iterations=`None` -- or 3 (float, numpy-array, float)
+        - first element is the test value,
+        - second element is samples from the null distribution via a bootstraps algorithm,
+        - third element is the estimated p-value.
+    """
     def create_kernel():
         """
         Returns: A kernel matrix K such that K_{i, j} is the kernel between the ith and jth vectors of the given matrix X, if Y is None.
