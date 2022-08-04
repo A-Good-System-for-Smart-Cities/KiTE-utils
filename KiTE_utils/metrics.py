@@ -5,11 +5,6 @@ from tqdm import tqdm
 from KiTE_utils.validation import check_attributes
 import logging
 
-import decorator
-
-
-
-
 def ELCE2_estimator(K_xx, err):
     """
     The estimator $ELCE^2 = \sum (e Kxx e^T) / n / (n-1)$
