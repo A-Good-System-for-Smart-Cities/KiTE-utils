@@ -15,7 +15,7 @@ def ELCE2_estimator(K_xx, err):
     Parameters
     ----------
         err: numpy array
-            one-dimensional error vector.
+            one-dimensional error vector. ... make X, into just X ...
 
         K_xx: numpy array
             evaluated kernel function.
@@ -71,7 +71,9 @@ def ELCE2_null_estimator(err, K, rng):
 
     idx = rng.permutation(len(err))
 
-    return ELCE2_estimator(K, err[idx])
+    return ELCE2_estimator(K, err[idx]) #randomize error vector .. err = sample .. not looking at local neighbords
+    # cehcking local calibration .. each guy should be at 0 ...
+    # randomizaiton -- quanitfyes noise in estimator
 
 
 @no_none_arg
@@ -111,7 +113,7 @@ def compute_null_distribution(
         if isinstance(random_state, type(np.random.RandomState()))
         else np.random.RandomState(random_state)
     )
-    iterations_list = tqdm(range(iterations)) if verbose else range(iterations)
+    iterations_list = range(iterations)
 
     # compute the null distribution
     # for 1 cpu run the normal code, for more cpu use the Parallel library. This maximize the speed.
@@ -188,12 +190,17 @@ def ELCE2(
 
     def create_kernel():
         """
+        RBF = https://scikit-learn.org/stable/modules/generated/sklearn.metrics.pairwise.rbf_kernel.html?highlight=gaussian+kernel
         Returns: A kernel matrix K such that K_{i, j} is the kernel between the ith and jth vectors of the given matrix X, if Y is None.
         """
         # Pre-compute Kernel Function (Hyperplane/Convolution)
         K_pp_gamma = 1.0 / prob_kernel_wdith ** 2
-        K_pp_metric = kernel_function  #'rbf' #Should this be hardcoded as rbf?
-        K_pp_data = (
+        K_pp_metric = 'rbf' #radial basis functin = RBF ... gamma = 1/(2L^2) ... based on 1/2sigma^2... #kernel_function  #'rbf' #Should this be hardcoded as rbf?
+
+        # In binary class (p vs 1-p) vs miltiple classification (p1 + ...+ pn = 1)
+        # Rn, only works for 2d classfier
+        # p should be nx1 for the kernal function
+        K_pp_data = ( # if p.shape == 1 ... turn n, --> nx1
             p if len(p.shape) == 2 else p[:, np.newaxis] if len(p.shape) == 1 else None
         )
         if not K_pp_data:
@@ -202,12 +209,16 @@ def ELCE2(
             )
 
         # Assume valid p and X
+        # Safe default = gaussian kernal
+        # Kxx -- examine feature space while Kpp = neighbors in probability space
+        # Kxx = 1 -- Global calibration .. focus only on Kpp = output probability
         K_xx = pairwise_kernels(X, X, metric=kernel_function, **kwargs)
         K_pp = pairwise_kernels(
             K_pp_data, K_pp_data, metric=K_pp_metric, gamma=K_pp_gamma
         )
 
-        # Does order of matrix multiplication matter here?
+        # Consider both similar features && similar probabilities
+        # K_xx includes ENTIRE feature space ... may not match input as model ..
         K = K_pp * K_xx
         return K
 
@@ -239,8 +250,9 @@ def ELCE2(
         random_state=random_state,
     )
 
+    # Permutation -- est noise under Ho ... Ho assume no global/local miscallibrate .. should cent around 0
     # center it at zero (to account for global mis-calibration) <-- WHY?? .. Are we allowing for bias when should assume no bias?
-    test_null -= np.mean(test_null)
+    test_null -= np.mean(test_null) # What would mbe noise of a Ho model?
 
     # compute the p-value, if less then the resolution set it to the resolution
     p_value = max(resolution, resolution * (test_null > test_value).sum())
