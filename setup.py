@@ -8,7 +8,7 @@ from setuptools import find_packages, setup
 setup_dir = dirname(abspath(__file__))
 git_dir = join(setup_dir, ".git")
 version_file = join(setup_dir, "version.py")
-package_name = "KiTE_utils"
+package_name = "KiTE"
 
 
 def get_git_tag():
@@ -50,8 +50,8 @@ if exists(git_dir):
 
     # Version number: <year>.<# commits on main>
     version = version_str.strip()
-elif "KiTE_utils-" in os.getcwd():
-    version = os.getcwd().split("KiTE_utils-")[1].strip()
+elif "KiTE-" in os.getcwd():
+    version = os.getcwd().split("KiTE-")[1].strip()
 else:
     version = "0"
 if version != "0":

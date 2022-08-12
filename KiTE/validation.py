@@ -1,4 +1,4 @@
-from KiTE_utils import no_none_arg
+from KiTE import no_none_arg
 
 
 @no_none_arg

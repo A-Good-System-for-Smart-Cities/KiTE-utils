@@ -1,5 +1,5 @@
-from KiTE_utils import none_arg_msg
-from KiTE_utils.validation import check_attributes
+from KiTE import none_arg_msg
+from KiTE.validation import check_attributes
 import numpy as np
 import pytest
 import re

@@ -3,7 +3,7 @@
 - To format code, run `black .`
 - To lint code, run `flake8 .`
 - To install requirements, run `pip install -r requirements.txt`
-- To run tests, run `pytest -s KiTE_utils`
+- To run tests, run `pytest -s KiTE`
 
 ---
 
@@ -15,12 +15,12 @@
 3. Create a branch (`git checkout -b new-feature`)
 4. Make Changes
 5. Run necessary quality assurance tools
- - [Formatter](#Formatter), [Linter](#Linter) ,[Unit Tests](#Unit-Tests).
+ - [Formatter](#Formatter), [Linter](#Linter), [Unit Tests](#Unit-Tests).
 6. Add your changes (`git commit -am "Commit Message"` or `git add <whatever files/folders you want to add>` followed by `git commit -m "Commit Message"`)
 7. Push your changes to the repo (`git push origin new-feature`)
 8. Create a pull request
 
-You can locally build the package with `pip install -e .` and run unit tests with `pytest -s KiTE_utils`.
+You can locally build the package with `pip install -e .` and run unit tests with `pytest -s KiTE`.
 
 ---
 ## Code Quality Tools
@@ -38,4 +38,4 @@ You can locally build the package with `pip install -e .` and run unit tests wit
 ### [pytest](https://github.com/pytest-dev/pytest) runs unit tests
 
 1. Run `pip install pytest` to get the package.
-2. After making changes, you can run `pytest -s KiTE_utils` to run all unit tests
+2. After making changes, you can run `pytest -s KiTE` to run all unit tests
