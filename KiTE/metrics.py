@@ -7,7 +7,7 @@ import logging
 import numpy as np
 
 
-@no_none_arg
+#@no_none_arg
 def ELCE2_estimator(K_xx, err):
     """
     The estimator $ELCE^2 = \sum (e Kxx e^T) / n / (n-1)$
@@ -28,7 +28,7 @@ def ELCE2_estimator(K_xx, err):
     return K.sum() - K.diagonal().sum()
 
 
-@no_none_arg
+#@no_none_arg
 def ELCE2_normalization(K):
     """
     The normalization of estimator ELCE^2 = \sum (1 x Kxx x 1T) / n / (n-1)
@@ -48,7 +48,7 @@ def ELCE2_normalization(K):
     return (size - 1.0) * K.sum() / size
 
 
-@no_none_arg
+#@no_none_arg
 def ELCE2_null_estimator(err, K, rng):
     """
     Compute the ELCE^2_u for one bootstrap realization.
@@ -76,7 +76,7 @@ def ELCE2_null_estimator(err, K, rng):
     # randomizaiton -- quanitfyes noise in estimator
 
 
-@no_none_arg
+# #@no_none_arg
 def _calculate_err_vector(Y, p):
     return Y - p
 
@@ -135,7 +135,7 @@ def ELCE2(
     kernel_function="rbf",
     prob_kernel_width=0.1,
     iterations=None,
-    verbose=False,
+    verbose=True,
     random_state=None,
     n_jobs=1,
     **kwargs,
@@ -200,10 +200,11 @@ def ELCE2(
         # In binary class (p vs 1-p) vs miltiple classification (p1 + ...+ pn = 1)
         # Rn, only works for 2d classfier
         # p should be nx1 for the kernal function
-        K_pp_data = ( # if p.shape == 1 ... turn n, --> nx1
-            p if len(p.shape) == 2 else p[:, np.newaxis] if len(p.shape) == 1 else None
-        )
-        if not K_pp_data:
+        if len(p.shape) == 2:
+            K_pp_data = p
+        elif len(p.shape) == 1: # if p.shape == 1 ... turn n, --> nx1
+            K_pp_data = p[:, np.newaxis]
+        else:
             raise ValueError(
                 f"p has invalid dimensions of {p.shape}. The length of p's shape should be 1 or 2, not {len(p.shape)}"
             )
@@ -224,6 +225,9 @@ def ELCE2(
 
     check_attributes(X, Y)
     K = create_kernel()
+    assert len(Y) == len(p)
+    assert None not in Y
+    assert None not in p
     p_err = _calculate_err_vector(Y, p)
 
     # Estimate the Null "Oracle" Distribution

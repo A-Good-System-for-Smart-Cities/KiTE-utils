@@ -23,7 +23,7 @@ class Test_check_attributes():
             check_attributes(X, X.T)
 
     def test_invalid_iterations(self):
-        X = np.array([[1, 2, 3], [11, 21, 31]])
+        X = np.array([[1, 2, 3], [None, 21, 31]])
         str_input = "cake"
         neg_input = -1
         with pytest.raises(
