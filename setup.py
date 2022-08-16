@@ -8,7 +8,7 @@ from setuptools import find_packages, setup
 setup_dir = dirname(abspath(__file__))
 git_dir = join(setup_dir, ".git")
 version_file = join(setup_dir, "version.py")
-package_name = "KiTE_utils"
+package_name = "KiTE"
 
 
 def get_git_tag():
@@ -50,8 +50,8 @@ if exists(git_dir):
 
     # Version number: <year>.<# commits on main>
     version = version_str.strip()
-elif "KiTE_utils-" in os.getcwd():
-    version = os.getcwd().split("KiTE_utils-")[1].strip()
+elif "KiTE-" in os.getcwd():
+    version = os.getcwd().split("KiTE-")[1].strip()
 else:
     version = "0"
 if version != "0":
@@ -84,14 +84,11 @@ setup(
     setup_requires=["pytest-runner"],
     tests_require=["pytest"],
     install_requires=[
-        "decorator>=5.1.0",
         "joblib>=1.1.0",
+        "netcal>=1.2.1",
         "numpy>=1.22.4",
-        "pandas>=1.4.3",
-        "pytest>=6.2.5",
         "scikit_learn>=1.1.1",
-        "setuptools>=41.2.0,"
-        "tqdm>=4.64.0"
+        "tqdm>=4.64.0",
     ],
     python_requires=">=3.8",
     license="MIT License",
