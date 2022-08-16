@@ -8,7 +8,7 @@ from setuptools import find_packages, setup
 setup_dir = dirname(abspath(__file__))
 git_dir = join(setup_dir, ".git")
 version_file = join(setup_dir, "version.py")
-package_name = "KiTE"
+package_name = "KiTE_utils"
 
 
 def get_git_tag():
@@ -43,12 +43,15 @@ if exists(git_dir):
         stderr=subprocess.STDOUT,
     )
     # If there is no main branch, the commit count defaults to 0
-    version_str = "0" if proc.returncode else proc.stdout.decode("utf-8")
+    if proc.returncode:
+        version_str = "0"
+    else:
+        version_str = proc.stdout.decode("utf-8")
 
     # Version number: <year>.<# commits on main>
     version = version_str.strip()
-elif "KiTE-" in os.getcwd():
-    version = os.getcwd().split("KiTE-")[1].strip()
+elif "KiTE_utils-" in os.getcwd():
+    version = os.getcwd().split("KiTE_utils-")[1].strip()
 else:
     version = "0"
 if version != "0":
