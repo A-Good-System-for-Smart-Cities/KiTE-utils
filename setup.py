@@ -90,7 +90,6 @@ setup(
         "pandas>=1.4.3",
         "pytest>=6.2.5",
         "scikit_learn>=1.1.1",
-        "setuptools>=41.2.0,"
         "tqdm>=4.64.0"
     ],
     python_requires=">=3.8",
