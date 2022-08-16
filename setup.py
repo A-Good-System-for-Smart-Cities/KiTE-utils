@@ -43,10 +43,7 @@ if exists(git_dir):
         stderr=subprocess.STDOUT,
     )
     # If there is no main branch, the commit count defaults to 0
-    if proc.returncode:
-        version_str = "0"
-    else:
-        version_str = proc.stdout.decode("utf-8")
+    version_str = "0" if proc.returncode else proc.stdout.decode("utf-8")
 
     # Version number: <year>.<# commits on main>
     version = version_str.strip()
@@ -84,11 +81,14 @@ setup(
     setup_requires=["pytest-runner"],
     tests_require=["pytest"],
     install_requires=[
+        "decorator>=5.1.0",
         "joblib>=1.1.0",
-        "netcal>=1.2.1",
         "numpy>=1.22.4",
+        "pandas>=1.4.3",
+        "pytest>=6.2.5",
         "scikit_learn>=1.1.1",
-        "tqdm>=4.64.0",
+        "setuptools>=41.2.0,"
+        "tqdm>=4.64.0"
     ],
     python_requires=">=3.8",
     license="MIT License",

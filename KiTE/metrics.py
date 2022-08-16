@@ -25,7 +25,7 @@ def ELCE2_estimator(K_xx, err):
         float: estimated ELCE^2
     """
     K = (err.flatten() * K_xx.T).T * err.flatten()
-    return K.sum() - K.diagonal().sum()  # / (size * (size-1.0))
+    return K.sum() - K.diagonal().sum()
 
 
 @no_none_arg
@@ -45,7 +45,7 @@ def ELCE2_normalization(K):
 
     size = K.shape[0]
 
-    return (size - 1.0) * K.sum() / size  # - K.diagonal().sum()
+    return (size - 1.0) * K.sum() / size
 
 
 @no_none_arg
@@ -133,7 +133,7 @@ def ELCE2(
     Y,
     p,
     kernel_function="rbf",
-    prob_kernel_wdith=0.1,
+    prob_kernel_width=0.1,
     iterations=None,
     verbose=False,
     random_state=None,
@@ -143,7 +143,7 @@ def ELCE2(
     """
     This function estimate ELCE^2_u employing a kernel trick. ELCE^2_u tests if a proposed posterior credible interval
     is calibrated employing a randomly drawn calibration test. The null hypothesis is that the posteriors are
-    properly calibrated This function perform a bootstrap algorithm to estimate the null distribution,
+    properly calibrated. This function perform a bootstrap algorithm to estimate the null distribution,
     and corresponding p-value.
 
     Parameters
@@ -161,7 +161,7 @@ def ELCE2(
             defines the kernel function. For the list of implemented kernel please consult with
             https://scikit-learn.org/stable/modules/generated/sklearn.metrics.pairwise.kernel_metrics.html#sklearn.metrics.pairwise.kernel_metrics
 
-        prob_kernel_wdith: float
+        prob_kernel_width: float
             Width of the probably kernel function.
 
         iterations: int
@@ -194,7 +194,7 @@ def ELCE2(
         Returns: A kernel matrix K such that K_{i, j} is the kernel between the ith and jth vectors of the given matrix X, if Y is None.
         """
         # Pre-compute Kernel Function (Hyperplane/Convolution)
-        K_pp_gamma = 1.0 / prob_kernel_wdith ** 2
+        K_pp_gamma = 1.0 / prob_kernel_width ** 2
         K_pp_metric = 'rbf' #radial basis functin = RBF ... gamma = 1/(2L^2) ... based on 1/2sigma^2... #kernel_function  #'rbf' #Should this be hardcoded as rbf?
 
         # In binary class (p vs 1-p) vs miltiple classification (p1 + ...+ pn = 1)

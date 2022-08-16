@@ -1,4 +1,6 @@
 notes.md
+*.png
+sample_notebooks/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
