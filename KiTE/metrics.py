@@ -1,13 +1,13 @@
 from joblib import Parallel, delayed
 from sklearn.gaussian_process.kernels import pairwise_kernels
-from tqdm import tqdm
-from KiTE import no_none_arg
+
+# from KiTE import no_none_arg
 from KiTE.validation import check_attributes
 import logging
 import numpy as np
 
 
-#@no_none_arg
+# @no_none_arg
 def ELCE2_estimator(K_xx, err):
     """
     The estimator $ELCE^2 = \sum (e Kxx e^T) / n / (n-1)$
@@ -28,7 +28,7 @@ def ELCE2_estimator(K_xx, err):
     return K.sum() - K.diagonal().sum()
 
 
-#@no_none_arg
+# @no_none_arg
 def ELCE2_normalization(K):
     """
     The normalization of estimator ELCE^2 = \sum (1 x Kxx x 1T) / n / (n-1)
@@ -48,7 +48,7 @@ def ELCE2_normalization(K):
     return (size - 1.0) * K.sum() / size
 
 
-#@no_none_arg
+# @no_none_arg
 def ELCE2_null_estimator(err, K, rng):
     """
     Compute the ELCE^2_u for one bootstrap realization.
@@ -71,7 +71,9 @@ def ELCE2_null_estimator(err, K, rng):
 
     idx = rng.permutation(len(err))
 
-    return ELCE2_estimator(K, err[idx]) #randomize error vector .. err = sample .. not looking at local neighbords
+    return ELCE2_estimator(
+        K, err[idx]
+    )  # randomize error vector .. err = sample .. not looking at local neighbords
     # cehcking local calibration .. each guy should be at 0 ...
     # randomizaiton -- quanitfyes noise in estimator
 
@@ -195,14 +197,14 @@ def ELCE2(
         """
         # Pre-compute Kernel Function (Hyperplane/Convolution)
         K_pp_gamma = 1.0 / prob_kernel_width ** 2
-        K_pp_metric = 'rbf' #radial basis functin = RBF ... gamma = 1/(2L^2) ... based on 1/2sigma^2... #kernel_function  #'rbf' #Should this be hardcoded as rbf?
+        K_pp_metric = "rbf"  # radial basis functin = RBF ... gamma = 1/(2L^2) ... based on 1/2sigma^2... #kernel_function  #'rbf' #Should this be hardcoded as rbf?
 
         # In binary class (p vs 1-p) vs miltiple classification (p1 + ...+ pn = 1)
         # Rn, only works for 2d classfier
         # p should be nx1 for the kernal function
         if len(p.shape) == 2:
             K_pp_data = p
-        elif len(p.shape) == 1: # if p.shape == 1 ... turn n, --> nx1
+        elif len(p.shape) == 1:  # if p.shape == 1 ... turn n, --> nx1
             K_pp_data = p[:, np.newaxis]
         else:
             raise ValueError(
@@ -256,7 +258,7 @@ def ELCE2(
 
     # Permutation -- est noise under Ho ... Ho assume no global/local miscallibrate .. should cent around 0
     # center it at zero (to account for global mis-calibration) <-- WHY?? .. Are we allowing for bias when should assume no bias?
-    test_null -= np.mean(test_null) # What would mbe noise of a Ho model?
+    test_null -= np.mean(test_null)  # What would mbe noise of a Ho model?
 
     # compute the p-value, if less then the resolution set it to the resolution
     p_value = max(resolution, resolution * (test_null > test_value).sum())

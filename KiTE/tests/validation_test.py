@@ -5,7 +5,7 @@ import pytest
 import re
 
 
-class Test_check_attributes():
+class Test_check_attributes:
     def test_None_inputs(self):
         with pytest.raises(ValueError, match=none_arg_msg):
             check_attributes(None, None)

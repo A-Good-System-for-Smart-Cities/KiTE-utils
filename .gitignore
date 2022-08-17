@@ -1,6 +1,5 @@
 notes.md
-*.png
-*.html
+output
 sample_notebooks/
 
 # Byte-compiled / optimized / DLL files
