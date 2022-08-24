@@ -1,10 +1,8 @@
 from joblib import Parallel, delayed
 from sklearn.gaussian_process.kernels import pairwise_kernels
-
-# from KiTE import no_none_arg
-from KiTE.validation import check_attributes
 import logging
 import numpy as np
+from KiTE.validation import check_attributes
 
 
 # @no_none_arg
@@ -196,7 +194,7 @@ def ELCE2(
         Returns: A kernel matrix K such that K_{i, j} is the kernel between the ith and jth vectors of the given matrix X, if Y is None.
         """
         # Pre-compute Kernel Function (Hyperplane/Convolution)
-        K_pp_gamma = 1.0 / prob_kernel_width ** 2
+        K_pp_gamma = 1.0 / prob_kernel_width**2
         K_pp_metric = "rbf"  # radial basis functin = RBF ... gamma = 1/(2L^2) ... based on 1/2sigma^2... #kernel_function  #'rbf' #Should this be hardcoded as rbf?
 
         # In binary class (p vs 1-p) vs miltiple classification (p1 + ...+ pn = 1)

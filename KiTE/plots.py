@@ -2,6 +2,7 @@ from plotly.subplots import make_subplots
 import plotly.graph_objs as go
 import kaleido
 
+
 # Plot Histogram of X-Test, prob_pos
 def plot_probability_frequency(prob_pos, ELCE2_, name="Name_of_model"):
     hist = go.Histogram(x=prob_pos, name=name)
@@ -12,8 +13,15 @@ def plot_probability_frequency(prob_pos, ELCE2_, name="Name_of_model"):
     fig.update_layout(title_text=f"{name} and ELCE2 Estimator")
     return fig
 
+
 def plot_ELCE2_number_line(ELCE2_):
     ELCE_trace = go.Scatter(
         x=[ELCE2_ * 100], y=[0, 0], mode="markers", marker_size=20, name="ELCE2"
     )
     return ELCE_trace
+
+
+"""
+kwargs --  label axis
+Q-Q reliability curves?
+"""

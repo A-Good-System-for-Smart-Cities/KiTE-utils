@@ -6,16 +6,11 @@ from sklearn.svm import LinearSVC
 from KiTE.metrics import ELCE2
 from KiTE.plots import plot_probability_frequency
 from sklearn.metrics import pairwise_distances
-
-# import matplotlib.pylab as plt
 import numpy as np
-
-# import os
-
-# import matplotlib as mpl
-# import plotly.express as px
 import plotly.figure_factory as ff
 import plotly.graph_objs as go
+from sklearn.calibration import CalibrationDisplay
+import matplotlib.pyplot as plt
 
 
 def create_train_cv_test_split(X, y, train_samples=20000, cv_samples=20000):
@@ -84,7 +79,7 @@ def example_1():
     for clf, name in [
         (lr, "Logistic"),
         (gnb, "Naive_Bayes"),
-        (svc, "Support_Vector_Classification"),
+        # (svc, "Support_Vector_Classification"),
         (rfc, "Random_Forest"),
     ]:
         print(f"CLF = {name}")
@@ -108,6 +103,8 @@ def example_1():
         print("\t\t ... DONE")
         fig = plot_probability_frequency(prob_pos, ELCE2_, name)
         fig.write_image(f"output/ex1_{name}.png")
+        # disp = CalibrationDisplay.from_estimator(clf, X_test, y_test)
+        # plt.savefig(f"output/qq_{name}.png")
 
     fig = ff.create_distplot(hist_data, group_labels, bin_size=0.05, show_rug=False)
     fig.update_xaxes(range=[0, 1])
