@@ -39,3 +39,11 @@ You can locally build the package with `pip install -e .` and run unit tests wit
 
 1. Run `pip install pytest` to get the package.
 2. After making changes, you can run `pytest -s KiTE` to run all unit tests
+
+---
+## Update Documentation
+We use [pdoc](https://github.com/mitmproxy/pdoc) to create KiTE's documentation.
+1. `pip install pdoc` into your working environment
+2. Preview edits with `pdoc -t doc_template --docformat numpy KiTE`.
+    * This will locally host the documentation site (that will update as you make edits)
+3. Edit documentation by adding/modifying docstrings in `KiTE`
