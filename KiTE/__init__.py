@@ -3,7 +3,6 @@ import numpy as np
 
 none_arg_msg = "A given argument was None."
 
-
 @decorator.decorator
 def no_none_arg(f, *args, **kwargs):
     is_none = [_ is None for _ in args if not isinstance(_, np.ndarray)]
@@ -19,6 +18,8 @@ KiTE contains utilities to validate and calidrate supervised machine learning mo
 Main Features
 -------------
 Here are the major utilities provided by the package:
-- ELCE2, calibration scripts, plotting utilities, etc
+- metrics
+- calibrate
+- plots
 
 """

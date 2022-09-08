@@ -1,3 +1,7 @@
+"""
+Calibration utilities to help reduce the local bias of a given model.
+"""
+
 import numpy as np
 from sklearn.gaussian_process.kernels import pairwise_kernels
 from sklearn.kernel_ridge import KernelRidge
@@ -10,7 +14,6 @@ from sklearn.calibration import calibration_curve
 from sklearn.metrics import brier_score_loss
 from KiTE.calibration_models import KRR_calibration, EWF_calibration
 from KiTE.validation import check_attributes, check_credible_vector_args
-
 
 def local_bias_estimator(X, Y, p, X_grid, model="KRR", kernel_function="rbf", **kwargs):
     """
@@ -75,21 +78,22 @@ def local_bias_estimator(X, Y, p, X_grid, model="KRR", kernel_function="rbf", **
 
 def construct_credible_error_vector(Y, Yr_up, Yr_down, alpha):
     """
-    For a one dimensional output prediction Y, construct the credible error vector. Uses given lower and upper percentiles. Assumes credible level alpha is fixed.
+    For a one dimensional output prediction Y, construct the credible error vector.
+    Uses given lower and upper percentiles. Assumes credible level alpha is fixed.
 
     Parameters
     ----------
-        Y : numpy-array
-            data, of size Nx1 [N is the number of data points]
+    Y : numpy-array
+        data, of size Nx1 [N is the number of data points]
 
-        Yr_up : numpy-array
-            upper percentile vector, of size Nx1 [N is the number of data points]
+    Yr_up : numpy-array
+        upper percentile vector, of size Nx1 [N is the number of data points]
 
-        Yr_up : numpy-array
-            upper percentile vector, of size Nx1 [N is the number of data points]
+    Yr_down : numpy-array
+        lower percentile vector, of size Nx1 [N is the number of data points]
 
-        alpha : float
-            the theoretical credible level alpha
+    alpha : float
+        the theoretical credible level alpha
 
     Returns
     -------
@@ -105,6 +109,7 @@ def construct_credible_error_vector(Y, Yr_up, Yr_down, alpha):
     e = Yind - alpha
 
     return e
+
 
 
 def calibrate(
@@ -193,7 +198,6 @@ def calibrate(
     # p_calibrated[p_calibrated < 0.0] = 0.0
 
     return p_calibrated  # f-hat -- f(x) = oracle = f-hat + b(x)
-
 
 def _counts_per_bin(prob, n_bins):
     """

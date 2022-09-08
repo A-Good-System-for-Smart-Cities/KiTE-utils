@@ -1,112 +1,114 @@
+"""
+Metrics utilities to help test if a model is locally biased.
+
+"""
+
 from joblib import Parallel, delayed
 from sklearn.gaussian_process.kernels import pairwise_kernels
 import logging
 import numpy as np
 from KiTE.validation import check_attributes
 
+def _calculate_err_vector(Y, p):
+    return Y - p
 
-# @no_none_arg
 def ELCE2_estimator(K_xx, err):
     """
-    The estimator $ELCE^2 = \sum (e Kxx e^T) / n / (n-1)$
+    The estimator ELCE^2
 
     Parameters
     ----------
-        err: numpy array
-            one-dimensional error vector. ... make X, into just X ...
+    K_xx : numpy-array
+        evaluated kernel function
 
-        K_xx: numpy array
-            evaluated kernel function.
+    err : numpy-array
+        one-dimensional error vector
 
-    return
-    ------
-        float: estimated ELCE^2
+    Returns
+    -------
+    numpy-array
+        estimated ELCE^2
     """
     K = (err.flatten() * K_xx.T).T * err.flatten()
     return K.sum() - K.diagonal().sum()
 
-
-# @no_none_arg
 def ELCE2_normalization(K):
     """
-    The normalization of estimator ELCE^2 = \sum (1 x Kxx x 1T) / n / (n-1)
+    The normalization of estimator ELCE^2
 
     Parameters
     ----------
-        K: numpy array
-            evaluated kernel function.
+    K : numpy-array
+        evaluated kernel function
 
-    return
-    ------
-        float: estimated normalization of ELCE^2
+    Returns
+    -------
+    float
+        estimated normalization of ELCE^2
     """
 
     size = K.shape[0]
 
     return (size - 1.0) * K.sum() / size
 
-
-# @no_none_arg
 def ELCE2_null_estimator(err, K, rng):
     """
-    Compute the ELCE^2_u for one bootstrap realization.
+    Compute the ELCE^2_u for one bootstrap realization
 
     Parameters
     ----------
-        err: numpy-array
-            one-dimensional error vector.
+    err : numpy-array
+        one-dimensional error vector
 
-        K: numpy-array
-            evaluated kernel function.
+    K : numpy-array
+        evaluated kernel function
 
-        rng: type(np.random.RandomState())
-             a numpy random function
+    rng : type(np.random.RandomState())
+        numpy random function
 
-    return
-    ------
-        float: an unbiased estimate of ELCE^2_u
+    Returns
+    -------
+    float
+        unbiased estimate of ELCE^2_u
+
     """
 
+    # randomize error vector so error = sample .. not looking at local neighbors
+    # checking local calibration ..
+    # randomizaiton -- quanitifies noise in estimator
     idx = rng.permutation(len(err))
 
     return ELCE2_estimator(
         K, err[idx]
-    )  # randomize error vector .. err = sample .. not looking at local neighbords
-    # cehcking local calibration .. each guy should be at 0 ...
-    # randomizaiton -- quanitfyes noise in estimator
-
-
-# #@no_none_arg
-def _calculate_err_vector(Y, p):
-    return Y - p
-
+    )
 
 def compute_null_distribution(
     p_err, K, iterations=1000, n_jobs=1, verbose=False, random_state=None
 ):
     """
-    Compute the null-distribution of test statistics via a bootstrap procedure.
+    Compute the null-distribution of test statistics via a bootstrap procedure
 
     Parameters
     ----------
-        p_err: numpy-array
-            one-dimensional probability error vector.
+    p_err : numpy-array
+        one-dimensional probability error vector
 
-        K: numpy array
-            evaluated kernel function.
+    K : numpy-array
+        evaluated kernel function
 
-        iterations: int
-            controls the number of bootstrap realizations
+    iterations : int
+        controls the number of bootstrap realizations
 
-        verbose: bool
-            controls the verbosity of the model's output.
+    verbose : bool
+        controls the verbosity of the model's output
 
-        random_state: type(np.random.RandomState()) or None
-            defines the initial random state.
+    random_state : type(np.random.RandomState()) or None
+        defines the initial random state
 
-    return
-    ------
-    numpy-array: a boostrap samples of the test null distribution
+    Returns
+    -------
+    numpy-array
+        boostrap samples of the test null distribution
     """
     rng = (
         random_state
@@ -148,50 +150,53 @@ def ELCE2(
 
     Parameters
     ----------
-        X: numpy-array
-            data, of size NxD [N is the number of data points, D is the features dimension]
+    X : numpy-array
+        data, of size NxD [N is the number of data points, D is the features dimension]
 
-        Y: numpy-array
-            credible error vector, of size Nx1 [N is the number of data points]
+    Y : numpy-array
+        credible error vector, of size Nx1 [N is the number of data points]
 
-        p: numpy-array
-            probability vector, of size Nx1 [N is the number of data points]
+    p : numpy-array
+        probability vector, of size Nx1 [N is the number of data points]
 
-        kernel_function: string
-            defines the kernel function. For the list of implemented kernel please consult with
-            https://scikit-learn.org/stable/modules/generated/sklearn.metrics.pairwise.kernel_metrics.html#sklearn.metrics.pairwise.kernel_metrics
+    kernel_function : string
+        defines the kernel function. For the list of implemented kernels, please consult with [sklearn](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.pairwise.kernel_metrics.html#sklearn.metrics.pairwise.kernel_metrics)
 
-        prob_kernel_width: float
-            Width of the probably kernel function.
+    prob_kernel_width : float
+        Width of the probably kernel function
 
-        iterations: int
-            controls the number of bootstrap realizations
+    iterations : int
+        controls the number of bootstrap realizations
 
-        verbose: bool
-            controls the verbosity of the model's output.
+    verbose : bool
+        controls the verbosity of the model's output
 
-        random_state: type(np.random.RandomState()) or None
-            defines the initial random state.
+    random_state : type(np.random.RandomState()) or None
+        defines the initial random state
 
-        n_jobs: int
-            number of jobs to run in parallel.
+    n_jobs : int
+        number of jobs to run in parallel
 
-        **kwargs:
-            extra parameters, these are passed to `pairwise_kernels()` as kernel parameters o
-            as the number of k. E.g., if `kernel_two_sample_test(..., kernel_function='rbf', gamma=0.1)`
+    **kwargs : **kwargs
+        extra parameters, these are passed to `pairwise_kernels()` as kernel parameters
+        E.g., if `kernel_two_sample_test(..., kernel_function='rbf', gamma=0.1)`
 
-    return
-    ----------
-    tuple of size 1 -- if iterations=`None` -- or 3 (float, numpy-array, float)
-        - first element is the test value,
-        - second element is samples from the null distribution via a bootstraps algorithm,
-        - third element is the estimated p-value.
+    Returns
+    -------
+    tuple
+        - SIZE = 1 if iterations=`None` else 3 (float, numpy-array, float)
+            - first element is the test value,
+            - second element is samples from the null distribution via a bootstraps algorithm,
+            - third element is the estimated p-value.
     """
 
     def create_kernel():
         """
         RBF = https://scikit-learn.org/stable/modules/generated/sklearn.metrics.pairwise.rbf_kernel.html?highlight=gaussian+kernel
-        Returns: A kernel matrix K such that K_{i, j} is the kernel between the ith and jth vectors of the given matrix X, if Y is None.
+
+        Returns
+        -------
+        A kernel matrix K such that K_{i, j} is the kernel between the ith and jth vectors of the given matrix X, if Y is None.
         """
         # Pre-compute Kernel Function (Hyperplane/Convolution)
         K_pp_gamma = 1.0 / prob_kernel_width**2
