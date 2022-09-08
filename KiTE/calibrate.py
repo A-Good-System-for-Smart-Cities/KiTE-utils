@@ -14,42 +14,40 @@ from KiTE.validation import check_attributes, check_credible_vector_args
 
 def local_bias_estimator(X, Y, p, X_grid, model="KRR", kernel_function="rbf", **kwargs):
     """
-    Estimates model bias by calculating bias = Y - model predictions.
-    Assumes model is already close to the oracle model.
+    Estimates model bias by calculating bias = Y - model predictions. Assumes model is already close to the oracle model.
 
     Parameters
     ----------
-        X: numpy-array
-            data, of size NxD [N is the number of data points, D is the features dimension]
+    X : numpy-array
+        data, of size NxD [N is the number of data points, D is the features dimension]
 
-        Y: numpy-array
-            credible error vector, of size Nx1 [N is the number of data points]
+    Y : numpy-array
+        credible error vector, of size Nx1 [N is the number of data points]
 
-        p: numpy-array
-            probability vector, of size Nx1 [N is the number of data points]
+    p : numpy-array
+        probability vector, of size Nx1 [N is the number of data points]
 
-        X_grid: numpy-array ... QUESTION
-            - For EWF, X_grid used to build a kernel. This kernel used to calculate bias
-            - Else, X_grid used as "test features" to predict bias
+    X_grid : numpy-array ... QUESTION
+        - For EWF, X_grid used to build a kernel. This kernel used to calculate bias
+        - Else, X_grid used as "test features" to predict bias
 
-        model: str
-            Indicates model type. Valid Options include:
-                - "KRR": KernelRidge
-                - "SVR": SVR
-                - "EWF": EWF
+    model : str
+        Indicates model type. Valid Options include:
+            - "KRR": KernelRidge
+            - "SVR": SVR
+            - "EWF": EWF
 
-        kernel_function: str
-            Indicates kernel function type.
-            Refer to sklearn documentation to see which kernel functions are valid for model chosen.
+    kernel_function : str
+        Indicates kernel function type.
+        Refer to sklearn documentation to see which kernel functions are valid for model chosen.
 
-        **kwargs:
-            extra parameters passed to `pairwise_kernels()` as kernel parameters
+    **kwargs : **kwargs
+        extra parameters passed to `pairwise_kernels()` as kernel parameters
 
-    return
-    ------
-        bias: numpy-array
-            estimated bias
-
+    Returns
+    -------
+    numpy-array
+        estimated bias
     """
 
     check_attributes(X, Y)
@@ -77,26 +75,26 @@ def local_bias_estimator(X, Y, p, X_grid, model="KRR", kernel_function="rbf", **
 
 def construct_credible_error_vector(Y, Yr_up, Yr_down, alpha):
     """
-    For a one dimensional output prediction Y, construct the credible error vector.
-    Uses given lower and upper percentiles. Assumes credible level alpha is fixed.
+    For a one dimensional output prediction Y, construct the credible error vector. Uses given lower and upper percentiles. Assumes credible level alpha is fixed.
 
     Parameters
     ----------
-        Y: numpy-array
+        Y : numpy-array
             data, of size Nx1 [N is the number of data points]
 
-        Yr_up: numpy-array
+        Yr_up : numpy-array
             upper percentile vector, of size Nx1 [N is the number of data points]
 
-        Yr_up: numpy-array
+        Yr_up : numpy-array
             upper percentile vector, of size Nx1 [N is the number of data points]
 
-        alpha: float
+        alpha : float
             the theoretical credible level alpha
 
-    return
-    ------
-    numpy-array: credible error vector
+    Returns
+    -------
+    numpy-array
+        Credible Error Vector
     """
     check_credible_vector_args(Y, Yr_up, Yr_down, alpha)
 
@@ -133,8 +131,8 @@ def calibrate(
 
     Returns
     -------
-    p_calibrated : array, shape (n_bins,)
-        The calibrated error for test set.
+    array, shape (n_bins,)
+        The calibrated error for test set. (p_calibrated)
 
     """
     probs = prob_train[:, np.newaxis] if prob_test is None else prob_test[:, np.newaxis]
@@ -231,9 +229,8 @@ def calibration_error(y_true, y_prob, n_bins=10, method="ECE"):
 
     Returns
     -------
-    score : float
+    float
         calibration error score
-
     """
 
     # compute fraction of positive cases per y_prob in a bin.

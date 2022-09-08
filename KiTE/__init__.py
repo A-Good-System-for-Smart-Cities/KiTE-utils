@@ -10,3 +10,15 @@ def no_none_arg(f, *args, **kwargs):
     if len(is_none) == 0 or True in is_none:
         raise ValueError(none_arg_msg)
     return f(*args, **kwargs)
+
+
+__docformat__ = "restructuredtext"
+__doc__ = """
+KiTE contains utilities to validate and calidrate supervised machine learning models.
+
+Main Features
+-------------
+Here are the major utilities provided by the package:
+- ELCE2, calibration scripts, plotting utilities, etc
+
+"""

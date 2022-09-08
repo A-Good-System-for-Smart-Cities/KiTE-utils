@@ -20,6 +20,9 @@ def check_attributes(X, e, iterations=1000, n_jobs=1):
 
 @no_none_arg
 def check_credible_vector_args(Y, Yr_up, Yr_down, alpha):
+    """
+    Check arguments of construct_credible_error_vector()
+    """
     if Y.flatten().shape[0] != Yr_up.flatten().shape[0]:
         raise ValueError(
             f"Incompatible dimension for Y and Yr_up matrices. Y and Yr_up should have the same feature dimension: Y.shape[0] == {Y.shape[0]} while Yr.shape[0] == {Yr_up.shape[0]}."
