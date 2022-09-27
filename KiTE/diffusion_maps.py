@@ -1,15 +1,39 @@
 from scipy.spatial.distance import pdist, squareform
 import numpy as np
-from numpy.linalg import matrix_power # BRUTE FORCE
-
+from numpy.linalg import matrix_power, eig # BRUTE FORCE
 
 # ASSERT num_lambdas < min(num_rows, num_cols)
+
+
+def calculate_kernel_matrix(X, epsilon):
+    """
+    Calculate Kernel Matrix ... an indication of local geometry
+    NOTE: K is symmetric (k(x,y)=k(y,x)) and positivity preserving (k(x,y) >= 0 forall x,y)
+
+    Parameters
+    ----------
+    K : numpy-array
+        kernel matrix
+
+    Returns
+    -------
+    numpy-array
+        Full Connectivity Matrix
+    """
+    distance_sq = squareform(pdist(points, metric='sqeuclidean'))  # noqa
+    K = np.exp(-distance_sq / (2.0 * epsilon))
+
+    return K
+
 def get_connectivity_matrix(K):
     """
     Calculate connectivity matrix (as normalization of Kernel Matrix Rows).
     Each value in connectivity matrix is probability of stepping to another cell in 1 timestep!
     Multiply connectivity matrices to see how probabilities change over 2 timesteps
-    NOTE: Each row's probabilities should sum to 1.
+
+    NOTES:
+        - p is positivity preserving (p(x,y) >= 0 forall x,y) & sum of P in each row = 1
+
 
     P_i = collection of all connectivities leading to point xi
         = Diffusion Space of X
@@ -27,41 +51,34 @@ def get_connectivity_matrix(K):
 
     # 1. d_row = sum across K's 1st dimension
     dx = K.sum(axis = 0)
-    assert(0 not in dx) #WHAT TO DO IN A SPARSE MATRIX
+    assert(0 not in dx)
 
     # 2. p_ij = k_ij / d_row
     # How handle floating point issues???
     p = np.multiply(1/dx, K)
     return p
 
+def transform_into_diffusion_space(K=None, num_timesteps = 1):
+    if not K:
+        return None
 
-def get_timesteped_connectivity_matrix(P, num_timesteps = 1, num_lambdas = 1):
-    """
-    P = QDQ^T --> Can j do SVD?
-        * Diagonalize P and sort eigenvalues and corresponding left eigenvectors in descending order
-        * Use truncated set of n eigenvectors to created reduced dimensionality space
+    p = get_connectivity_matrix(K)
 
-    Parameters
-    ----------
-    P : numpy-array
-        Full Connectivity Matrix
+    # Eigendecomposition:
+    eigenvalues, eigenvectors = np.linalg.eig(p)
+    lambda_mtrx = np.diag(eigenvalues)
 
-    num_timesteps : int > 0
+    # Build Diffy Map:
+    assert(len(eigenvalues) == len(eigenvectors))
+    diffy_map = []
+    for i in range(len(eigenvalues)):
+        val = (eigenvalues[i]) ** t
+        vec = eigenvectors[i]
+        diffy_map.append(val*vec)
 
-    num_lambdas : int > 0
+    return diffy_map
 
-    Returns
-    -------
-    numpy-array
-        Connectivity Matrix based on truncasted set of num_lambdas eigenvectors
-
-    """
-
-    #Return based on ALL Eigenvalues ... Really costly!
-    return matrix_power(P, num_timesteps)
-
-
-def calculate_diffusion_distance_matrix(P):
+def calculate_diffusion_distance_matrix(diffy_map):
     """
     New Distance based on pairwise distance between 2 points' connectivity
     D^2 = sum_u [ (P^t)_iu - (P^t)_ju ]^2 ... D = dist(p_iu, p_ij)
@@ -78,5 +95,5 @@ def calculate_diffusion_distance_matrix(P):
     numpy-array
         Diffusion Distance Matrix
     """
-    diffy_distance = pdist(P, 'euclidean')
+    diffy_distance = pdist(diffy_map, 'euclidean')
     return diffy_distance

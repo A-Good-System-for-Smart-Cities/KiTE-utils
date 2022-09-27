@@ -190,6 +190,7 @@ def ELCE2(
             - third element is the estimated p-value.
     """
 
+    # Only for euclidean ... NOT Diffy ... mk separate method for diffy ...
     def create_kernel():
         """
         RBF = https://scikit-learn.org/stable/modules/generated/sklearn.metrics.pairwise.rbf_kernel.html?highlight=gaussian+kernel
@@ -218,7 +219,8 @@ def ELCE2(
         # Safe default = gaussian kernal
         # Kxx -- examine feature space while Kpp = neighbors in probability space
         # Kxx = 1 -- Global calibration .. focus only on Kpp = output probability
-        K_xx = pairwise_kernels(X, X, metric=kernel_function, **kwargs)
+        # For Diffy distance --- INput = D .. to get L2 norm of
+        K_xx = pairwise_kernels(X, X, metric=kernel_function, **kwargs) #computer L2 Norm in actual space
         K_pp = pairwise_kernels(
             K_pp_data, K_pp_data, metric=K_pp_metric, gamma=K_pp_gamma
         )
