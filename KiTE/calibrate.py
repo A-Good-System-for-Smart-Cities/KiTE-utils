@@ -15,6 +15,7 @@ from sklearn.metrics import brier_score_loss
 from KiTE.calibration_models import KRR_calibration, EWF_calibration
 from KiTE.validation import check_attributes, check_credible_vector_args
 
+
 def local_bias_estimator(X, Y, p, X_grid, model="KRR", kernel_function="rbf", **kwargs):
     """
     Estimates model bias by calculating bias = Y - model predictions. Assumes model is already close to the oracle model.
@@ -55,7 +56,9 @@ def local_bias_estimator(X, Y, p, X_grid, model="KRR", kernel_function="rbf", **
 
     check_attributes(X, Y)
 
-    if model == "KRR": # look at locals and fit linear model ... capiture .. preocmputed = weights
+    if (
+        model == "KRR"
+    ):  # look at locals and fit linear model ... capiture .. preocmputed = weights
         model = KernelRidge(kernel=kernel_function, **kwargs)
     elif model == "SVR":
         model = SVR(kernel=kernel_function, **kwargs)
@@ -110,7 +113,6 @@ def construct_credible_error_vector(Y, Yr_up, Yr_down, alpha):
     e = Yind - alpha
 
     return e
-
 
 
 def calibrate(
@@ -199,6 +201,7 @@ def calibrate(
     # p_calibrated[p_calibrated < 0.0] = 0.0
 
     return p_calibrated  # f-hat -- f(x) = oracle = f-hat + b(x)
+
 
 def _counts_per_bin(prob, n_bins):
     """

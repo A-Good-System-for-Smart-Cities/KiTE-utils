@@ -8,9 +8,12 @@ from sklearn.gaussian_process.kernels import pairwise_kernels
 import logging
 import numpy as np
 from KiTE.validation import check_attributes
+from KiTE.diffusion_maps import *
+
 
 def _calculate_err_vector(Y, p):
     return Y - p
+
 
 def ELCE2_estimator(K_xx, err):
     """
@@ -32,6 +35,7 @@ def ELCE2_estimator(K_xx, err):
     K = (err.flatten() * K_xx.T).T * err.flatten()
     return K.sum() - K.diagonal().sum()
 
+
 def ELCE2_normalization(K):
     """
     The normalization of estimator ELCE^2
@@ -50,6 +54,7 @@ def ELCE2_normalization(K):
     size = K.shape[0]
 
     return (size - 1.0) * K.sum() / size
+
 
 def ELCE2_null_estimator(err, K, rng):
     """
@@ -78,9 +83,8 @@ def ELCE2_null_estimator(err, K, rng):
     # randomizaiton -- quanitifies noise in estimator
     idx = rng.permutation(len(err))
 
-    return ELCE2_estimator(
-        K, err[idx]
-    )
+    return ELCE2_estimator(K, err[idx])
+
 
 def compute_null_distribution(
     p_err, K, iterations=1000, n_jobs=1, verbose=False, random_state=None
@@ -137,6 +141,7 @@ def ELCE2(
     kernel_function="rbf",
     prob_kernel_width=0.1,
     iterations=None,
+    use_diffusion_distance=False,
     verbose=True,
     random_state=None,
     n_jobs=1,
@@ -191,7 +196,7 @@ def ELCE2(
     """
 
     # Only for euclidean ... NOT Diffy ... mk separate method for diffy ...
-    def create_kernel():
+    def create_kernel(use_diff):
         """
         RBF = https://scikit-learn.org/stable/modules/generated/sklearn.metrics.pairwise.rbf_kernel.html?highlight=gaussian+kernel
 
@@ -220,7 +225,9 @@ def ELCE2(
         # Kxx -- examine feature space while Kpp = neighbors in probability space
         # Kxx = 1 -- Global calibration .. focus only on Kpp = output probability
         # For Diffy distance --- INput = D .. to get L2 norm of
-        K_xx = pairwise_kernels(X, X, metric=kernel_function, **kwargs) #computer L2 Norm in actual space
+        K_xx = pairwise_kernels(
+            X, X, metric=kernel_function, **kwargs
+        )  # computer L2 Norm in actual space
         K_pp = pairwise_kernels(
             K_pp_data, K_pp_data, metric=K_pp_metric, gamma=K_pp_gamma
         )
