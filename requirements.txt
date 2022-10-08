@@ -1,7 +1,9 @@
 decorator>=5.1.1
-joblib>=1.1.0
+jobli>==1.1.0
 kaleido>=0.2.1
+netcal>=1.2.1
 numpy>=1.23.2
 plotly>=5.10.0
 pytest>=7.1.2
 scikit_learn>=1.1.2
+scipy>=1.9.0

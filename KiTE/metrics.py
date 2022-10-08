@@ -207,7 +207,7 @@ def ELCE2(
         A kernel matrix K such that K_{i, j} is the kernel between the ith and jth vectors of the given matrix X, if Y is None.
         """
         # Pre-compute Kernel Function (Hyperplane/Convolution)
-        K_pp_gamma = 1.0 / prob_kernel_width**2
+        K_pp_gamma = 1.0 / (prob_kernel_width**2)
         K_pp_metric = "rbf"
 
         # In binary class (p vs 1-p) vs miltiple classification (p1 + ...+ pn = 1)
