@@ -87,7 +87,7 @@ setup(
         "pandas>=1.4.3",
         "tqdm>=4.64.0",
         "decorator>=5.1.1",
-        "jobli>==1.1.0",
+        "joblib>==1.1.0",
         "kaleido>=0.2.1",
         "netcal>=1.2.1",
         "numpy>=1.23.2",
