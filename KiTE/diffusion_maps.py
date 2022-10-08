@@ -1,9 +1,8 @@
-from scipy.spatial.distance import pdist, squareform
 import numpy as np
-from numpy.linalg import matrix_power, eig
 from sklearn.metrics import pairwise_distances
 from sklearn.metrics.pairwise import euclidean_distances
 from scipy.linalg import eigh
+
 
 def calculate_kernel_matrix(X, epsilon):
     """
@@ -27,6 +26,7 @@ def calculate_kernel_matrix(X, epsilon):
     K = np.exp(-distance_sq / (2.0 * epsilon))
 
     return K
+
 
 def get_connectivity_matrix(K):
     """
@@ -53,14 +53,15 @@ def get_connectivity_matrix(K):
     """
 
     # 1. d_row = sum across K's 1st dimension
-    dx = K.sum(axis = 0)
-    assert(0 not in dx)
+    dx = K.sum(axis=0)
+    assert 0 not in dx
 
     # 2. p_ij = k_ij / d_row
-    p = np.multiply(1/dx, K)
+    p = np.multiply(1 / dx, K)
     return p
 
-def transform_into_diffusion_space(K=None, num_timesteps = 1, num_eigenvectors = 10):
+
+def transform_into_diffusion_space(K=None, num_timesteps=1, num_eigenvectors=10):
     """
     Given Kernel, calculates connectivity matrix (as normalization of Kernel Matrix Rows).
     Performs Eigendecomposition to transform kernel coordinates into a diffusion space
@@ -86,15 +87,16 @@ def transform_into_diffusion_space(K=None, num_timesteps = 1, num_eigenvectors =
 
     # Build Diffy Map:
     n = len(eigenvalues)
-    assert(len(eigenvalues) == len(eigenvectors))
+    assert len(eigenvalues) == len(eigenvectors)
     diffy_map = []
     for i in range(num_eigenvectors):
         indx_from_back = n - i - 1
-        val = (eigenvalues[n - i - 1]) ** num_timesteps
-        vec = eigenvectors[n - i - 1]
-        diffy_map.append(val*vec)
+        val = (eigenvalues[indx_from_back]) ** num_timesteps
+        vec = eigenvectors[indx_from_back]
+        diffy_map.append(val * vec)
 
     return diffy_map
+
 
 def calculate_diffusion_distance_matrix(diffy_map):
     """
@@ -113,5 +115,5 @@ def calculate_diffusion_distance_matrix(diffy_map):
     numpy-array
         Diffusion Distance Matrix
     """
-    diffy_distance = pairwise_distances(diffy_map, metric='euclidean')
+    diffy_distance = pairwise_distances(diffy_map, metric="euclidean")
     return diffy_distance

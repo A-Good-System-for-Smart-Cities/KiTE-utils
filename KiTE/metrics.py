@@ -8,7 +8,6 @@ from sklearn.gaussian_process.kernels import pairwise_kernels
 import logging
 import numpy as np
 from KiTE.validation import check_attributes
-from KiTE.diffusion_maps import *
 
 
 def _calculate_err_vector(Y, p):
@@ -199,7 +198,6 @@ def ELCE2(
             - third element is the estimated p-value.
     """
 
-    # Only for euclidean ... NOT Diffy ... mk separate method for diffy ...
     def create_kernel():
         """
         RBF = https://scikit-learn.org/stable/modules/generated/sklearn.metrics.pairwise.rbf_kernel.html?highlight=gaussian+kernel
@@ -210,10 +208,9 @@ def ELCE2(
         """
         # Pre-compute Kernel Function (Hyperplane/Convolution)
         K_pp_gamma = 1.0 / prob_kernel_width**2
-        K_pp_metric = "rbf"  # radial basis functin = RBF ... gamma = 1/(2L^2) ... based on 1/2sigma^2... #kernel_function  #'rbf' #Should this be hardcoded as rbf?
+        K_pp_metric = "rbf"
 
         # In binary class (p vs 1-p) vs miltiple classification (p1 + ...+ pn = 1)
-        # Rn, only works for 2d classfier
         # p should be nx1 for the kernal function
         if len(p.shape) == 2:
             K_pp_data = p
@@ -224,14 +221,7 @@ def ELCE2(
                 f"p has invalid dimensions of {p.shape}. The length of p's shape should be 1 or 2, not {len(p.shape)}"
             )
 
-        # Assume valid p and X
-        # Safe default = gaussian kernal
-        # Kxx -- examine feature space while Kpp = neighbors in probability space
-        # Kxx = 1 -- Global calibration .. focus only on Kpp = output probability
-        # For Diffy distance --- INput = D .. to get L2 norm of
-        K_xx = pairwise_kernels(
-            X, X, metric=kernel_function, **kwargs
-        )  # compute L2 Norm in actual space
+        K_xx = pairwise_kernels(X, X, metric=kernel_function, **kwargs)
         K_pp = pairwise_kernels(
             K_pp_data, K_pp_data, metric=K_pp_metric, gamma=K_pp_gamma
         )
@@ -273,8 +263,8 @@ def ELCE2(
     )
 
     # Permutation -- est noise under Ho ... Ho assume no global/local miscallibrate .. should cent around 0
-    # center it at zero (to account for global mis-calibration) <-- WHY?? .. Are we allowing for bias when should assume no bias?
-    test_null -= np.mean(test_null)  # What would mbe noise of a Ho model?
+    # center it at zero (to account for global mis-calibration)
+    test_null -= np.mean(test_null)
 
     # compute the p-value, if less then the resolution set it to the resolution
     p_value = max(resolution, resolution * (test_null > test_value).sum())

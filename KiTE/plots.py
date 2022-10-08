@@ -1,6 +1,7 @@
 from plotly.subplots import make_subplots
 import plotly.graph_objs as go
-import kaleido
+import kaleido  # noqa
+
 
 # Plot Histogram of X-Test, prob_pos
 def plot_probability_frequency(prob_pos, ELCE2_, name="Name_of_model"):

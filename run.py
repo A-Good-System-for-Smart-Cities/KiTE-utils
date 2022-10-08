@@ -9,8 +9,6 @@ from sklearn.metrics import pairwise_distances
 import numpy as np
 import plotly.figure_factory as ff
 import plotly.graph_objs as go
-from sklearn.calibration import CalibrationDisplay
-import matplotlib.pyplot as plt
 
 
 def create_train_cv_test_split(X, y, train_samples=20000, cv_samples=20000):
@@ -71,7 +69,7 @@ def example_1():
         instantiate_classifiers("svc", C=1.0),
         instantiate_classifiers("rfc"),
     )
-    print("\t ... DONE")
+    print(f"\t {lr}, {gnb}, {svc}, {rfc}... DONE")
 
     # Instaniate Plot
     hist_data = []

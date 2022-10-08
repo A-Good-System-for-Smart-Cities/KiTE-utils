@@ -56,14 +56,11 @@ def local_bias_estimator(X, Y, p, X_grid, model="KRR", kernel_function="rbf", **
 
     check_attributes(X, Y)
 
-    if (
-        model == "KRR"
-    ):  # look at locals and fit linear model ... capiture .. preocmputed = weights
+    if model == "KRR":
         model = KernelRidge(kernel=kernel_function, **kwargs)
     elif model == "SVR":
         model = SVR(kernel=kernel_function, **kwargs)
     elif model == "EWF":
-        # X = diffy distance .. X_grid = D_new guys (in calibrate set) // X ~ D (OG training set )
         K = pairwise_kernels(X, X_grid, metric=kernel_function, **kwargs)
         p_err = Y - p
         bias = np.sum(p_err.flatten() * K.T, axis=1) / np.sum(K.T, axis=1)
