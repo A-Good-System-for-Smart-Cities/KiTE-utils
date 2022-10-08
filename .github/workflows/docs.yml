@@ -1,0 +1,23 @@
+name: Documentation Test
+
+on: [push, pull_request]
+
+jobs:
+  docs:
+    name: Build Docs
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup Python 3.8
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+    - name: Generate Docs
+      run: |
+        pip install -e .
+        pip install pdoc
+        pdoc --t doc_template --docformat numpy -o kite-utils-docs KiTE/.
+    - uses: actions/upload-artifact@v2
+      with:
+        name: docs-build
+        path: kite-utils-docs/
