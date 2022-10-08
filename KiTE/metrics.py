@@ -173,6 +173,10 @@ def ELCE2(
     iterations : int
         controls the number of bootstrap realizations
 
+    use_diffusion_distance : bool
+        Use diffusion instead of eucliden distances
+        Transforms X into a diffusion space (see diffusion_maps.py)
+
     verbose : bool
         controls the verbosity of the model's output
 
@@ -196,7 +200,7 @@ def ELCE2(
     """
 
     # Only for euclidean ... NOT Diffy ... mk separate method for diffy ...
-    def create_kernel(use_diff):
+    def create_kernel():
         """
         RBF = https://scikit-learn.org/stable/modules/generated/sklearn.metrics.pairwise.rbf_kernel.html?highlight=gaussian+kernel
 
@@ -227,7 +231,7 @@ def ELCE2(
         # For Diffy distance --- INput = D .. to get L2 norm of
         K_xx = pairwise_kernels(
             X, X, metric=kernel_function, **kwargs
-        )  # computer L2 Norm in actual space
+        )  # compute L2 Norm in actual space
         K_pp = pairwise_kernels(
             K_pp_data, K_pp_data, metric=K_pp_metric, gamma=K_pp_gamma
         )

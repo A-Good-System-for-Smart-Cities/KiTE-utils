@@ -1,12 +1,9 @@
 from scipy.spatial.distance import pdist, squareform
 import numpy as np
-from numpy.linalg import matrix_power, eig # BRUTE FORCE
+from numpy.linalg import matrix_power, eig
 from sklearn.metrics import pairwise_distances
 from sklearn.metrics.pairwise import euclidean_distances
 from scipy.linalg import eigh
-
-# ASSERT num_lambdas < min(num_rows, num_cols)
-
 
 def calculate_kernel_matrix(X, epsilon):
     """
@@ -15,13 +12,16 @@ def calculate_kernel_matrix(X, epsilon):
 
     Parameters
     ----------
-    K : numpy-array
-        kernel matrix
+    X : numpy-array
+        Input data
+
+    epsilon : float
+        Metric for kernel width
 
     Returns
     -------
     numpy-array
-        Full Connectivity Matrix
+        Kernel Matrix
     """
     distance_sq = euclidean_distances(X, X, squared=True)
     K = np.exp(-distance_sq / (2.0 * epsilon))
@@ -57,15 +57,32 @@ def get_connectivity_matrix(K):
     assert(0 not in dx)
 
     # 2. p_ij = k_ij / d_row
-    # How handle floating point issues???
     p = np.multiply(1/dx, K)
     return p
 
 def transform_into_diffusion_space(K=None, num_timesteps = 1, num_eigenvectors = 10):
+    """
+    Given Kernel, calculates connectivity matrix (as normalization of Kernel Matrix Rows).
+    Performs Eigendecomposition to transform kernel coordinates into a diffusion space
+
+    Parameters
+    ----------
+    K : numpy-array
+        kernel matrix
+    num_timesteps : int
+        Number of timesteps for diffusion calculation
+    num_eigenvectors : int
+        Number of eigenvectors (used in descending order of magnitude) used to calculate diffusion coordinates
+
+    Returns
+    -------
+    numpy-array
+        Diffusion Coordinates/Map
+    """
     p = get_connectivity_matrix(K)
 
     # Eigendecomposition:
-    eigenvalues, eigenvectors = eigh(p)#np.linalg.eig(p) [n-3, n-1]
+    eigenvalues, eigenvectors = eigh(p)
 
     # Build Diffy Map:
     n = len(eigenvalues)
@@ -88,8 +105,8 @@ def calculate_diffusion_distance_matrix(diffy_map):
 
     Parameters
     ----------
-    P : numpy-array
-        Connectivity matrix on truncated set of eigenvalues
+    diffy_map : numpy-array
+        Diffusion Coordinates/Map
 
     Returns
     -------
