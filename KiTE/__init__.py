@@ -19,8 +19,8 @@ KiTE contains utilities to validate and calidrate supervised machine learning mo
 Main Features
 -------------
 Here are the major utilities provided by the package:
-- metrics
-- calibrate
-- plots
+- Metrics to test if local bias is statistically significant within the given model
+- Calibration utilities to reduce local bias
+- Diffusion Map utilities to transform euclidean distance metrics into a diffusion space
 
 """

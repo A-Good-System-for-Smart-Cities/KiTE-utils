@@ -31,7 +31,7 @@ def local_bias_estimator(X, Y, p, X_grid, model="KRR", kernel_function="rbf", **
     p : numpy-array
         probability vector, of size Nx1 [N is the number of data points]
 
-    X_grid : numpy-array ... QUESTION
+    X_grid : numpy-array
         - For EWF, X_grid used to build a kernel. This kernel used to calculate bias
         - Else, X_grid used as "test features" to predict bias
 
