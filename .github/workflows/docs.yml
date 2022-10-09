@@ -18,6 +18,8 @@ jobs:
         pip install pdoc
         pdoc --t doc_template --docformat numpy -o kite-utils-docs KiTE/.
     - uses: actions/upload-artifact@v2
+      env:
+        API_TOKEN_GITHUB: ${{ secrets.DOCS_TOKEN }}
       with:
         name: docs-build
         path: kite-utils-docs/
