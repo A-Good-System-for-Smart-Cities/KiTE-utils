@@ -5,6 +5,22 @@ import kaleido  # noqa
 
 # Plot Histogram of X-Test, prob_pos
 def plot_probability_frequency(prob_pos, ELCE2_, name="Name_of_model"):
+    """
+    Utility to plot histogram of X-Test, prob_pos
+
+    Parameters
+    ----------
+    prob_pos : numpy-array
+
+    ELCE2_ : tuple or int
+
+    name : string
+        Model Name
+
+    Returns
+    -------
+    fig : Histogram Plotly Figure
+    """
     hist = go.Histogram(x=prob_pos, name=name)
     ELCE_trace = plot_ELCE2_number_line(ELCE2_)
     fig = make_subplots(rows=2, cols=1, row_heights=[0.85, 0.15])
@@ -19,9 +35,3 @@ def plot_ELCE2_number_line(ELCE2_):
         x=[ELCE2_ * 100], y=[0, 0], mode="markers", marker_size=20, name="ELCE2"
     )
     return ELCE_trace
-
-
-"""
-kwargs --  label axis
-Q-Q reliability curves?
-"""

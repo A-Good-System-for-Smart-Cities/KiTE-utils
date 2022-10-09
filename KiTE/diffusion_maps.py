@@ -1,3 +1,7 @@
+"""
+Utilities to transform coordinates and distances into a diffusion space.
+"""
+
 import numpy as np
 from sklearn.metrics import pairwise_distances
 from sklearn.metrics.pairwise import euclidean_distances

@@ -1,6 +1,5 @@
 """
 Metrics utilities to help test if a model is locally biased.
-
 """
 
 from joblib import Parallel, delayed

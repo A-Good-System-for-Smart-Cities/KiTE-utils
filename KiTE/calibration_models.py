@@ -1,3 +1,7 @@
+"""
+Additional Callibration Models
+"""
+
 from KiTE.validation import check_attributes
 import numpy as np
 from sklearn.kernel_ridge import KernelRidge
