@@ -1,4 +1,4 @@
-# KiTE [![CI](https://github.com/A-Good-System-for-Smart-Cities/KiTE-utils/actions/workflows/CI.yml/badge.svg?branch=main)](https://github.com/A-Good-System-for-Smart-Cities/KiTE-utils/actions/workflows/CI.yml)
+# KiTE [![CI](https://github.com/A-Good-System-for-Smart-Cities/KiTE-utils/actions/workflows/CI.yml/badge.svg?branch=main)](https://github.com/A-Good-System-for-Smart-Cities/KiTE-utils/actions/workflows/CI.yml) [![Documentation Test](https://github.com/A-Good-System-for-Smart-Cities/KiTE-utils/actions/workflows/docs.yml/badge.svg)](https://github.com/A-Good-System-for-Smart-Cities/KiTE-utils/actions/workflows/docs.yml) [![.github/workflows/update-docs.yml](https://github.com/A-Good-System-for-Smart-Cities/KiTE-utils/actions/workflows/update-docs.yml/badge.svg)](https://github.com/A-Good-System-for-Smart-Cities/KiTE-utils/actions/workflows/update-docs.yml)
 ## (Summary)
 - To format code, run `black .`
 - To lint code, run `flake8 .`
