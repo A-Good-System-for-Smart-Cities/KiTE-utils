@@ -105,6 +105,7 @@ def transform_into_diffusion_space(K=None, num_timesteps=1, num_eigenvectors=10)
 def calculate_diffusion_distance_matrix(diffy_map):
     """
     New Distance based on pairwise distance between 2 points' connectivity
+
     D^2 = sum_u [ (P^t)_iu - (P^t)_ju ]^2 ... D = dist(p_iu, p_ij)
 
     D(xi, xj) ^ 2 = (Pi - Pj)^2
