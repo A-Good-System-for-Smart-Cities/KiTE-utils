@@ -2,7 +2,6 @@ notes.md
 output
 sample_notebooks/
 run.py
-static
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
