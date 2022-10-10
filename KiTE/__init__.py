@@ -9,6 +9,11 @@ Here are the major utilities provided by the package:
 - Calibration utilities to reduce local bias
 - Diffusion Map utilities to transform euclidean distance metrics into a diffusion space
 
+
+Example Notebooks
+-----------------
+We created [Example Notebooks](https://github.com/A-Good-System-for-Smart-Cities/KiTE-utils/tree/main/notebooks) to showcase basic examples and applications of this library.
+
 """
 
 import decorator
