@@ -34,7 +34,7 @@ class KRR_calibration:
 
 class EWF_calibration:
     def __init__(self):
-        self.model = "KRR"
+        self.model = "EWF"
 
     def fit(self, X, p, Y, kernel_function="rbf", **kwargs):
         check_attributes(X, Y)
