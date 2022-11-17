@@ -120,19 +120,28 @@ def calibrate(
 
     Parameters
     ----------
-    y_true : array, shape (n_samples_train,)
-        True targets for the training set.
+    Xtrain : array, shape (n_samples_train,)
+        Features used for training
 
-    y_prob_train : array, shape (n_samples_train,)
-        Probabilities of the positive class to train a calibration model.
+    prob_train : array, shape (n_samples_train,)
+        Probabilities of positive class to train a calibration model
 
-    y_prob_test : array, shape (n_samples_test,)
+    Ytrain : array, shape (n_samples_train,)
+        Values used for training
+
+    Xtest : array, shape (n_samples_test,)
+        Features used for testing
+
+    prob_test : array, shape (n_samples_test,)
         Probabilities of the positive class to be calibrated (test set). If None it re-calibrate the training set.
 
     method: string, 'platt', 'isotonic', 'temperature_scaling', 'beta', 'HB', 'BBG', 'ENIR'
         The method to use for calibration. Can be ‘sigmoid’ which corresponds to Platt’s method
         (i.e. a logistic regression model) or ‘isotonic’ which is a non-parametric approach.
         It is not advised to use isotonic calibration with too few calibration samples (<<1000) since it tends to overfit.
+
+    **kwargs
+        Additional Args used to fit KRR or EWF
 
     Returns
     -------
