@@ -3,6 +3,7 @@ output
 sample_notebooks/
 run.py
 .vscode
+*version.py
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
