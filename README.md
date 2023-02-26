@@ -17,7 +17,7 @@ pip install git+https://github.com/A-Good-System-for-Smart-Cities/KiTE-utils.git
 ```
 
 ### We welcome feedback!
-> You can submit any feedback, questions, or issues in the [Issues Tab](https://github.com/A-Good-System-for-Smart-Cities/KiTE-utils/issues) of this Repository. One of our team members will promptly respond to help you out!
+> Please submit any feedback, questions, or issues in the [Issues Tab](https://github.com/A-Good-System-for-Smart-Cities/KiTE-utils/issues) of this Repository. One of our team members will promptly respond to help you out!
 
 ### Contributing Summary
 - To format code, run `black .`
