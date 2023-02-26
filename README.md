@@ -1,9 +1,18 @@
-# KiTE [![CI](https://github.com/A-Good-System-for-Smart-Cities/KiTE-utils/actions/workflows/CI.yml/badge.svg?branch=main)](https://github.com/A-Good-System-for-Smart-Cities/KiTE-utils/actions/workflows/CI.yml) [![Documentation Test](https://github.com/A-Good-System-for-Smart-Cities/KiTE-utils/actions/workflows/docs.yml/badge.svg)](https://github.com/A-Good-System-for-Smart-Cities/KiTE-utils/actions/workflows/docs.yml) [![.github/workflows/update-docs.yml](https://github.com/A-Good-System-for-Smart-Cities/KiTE-utils/actions/workflows/update-docs.yml/badge.svg)](https://github.com/A-Good-System-for-Smart-Cities/KiTE-utils/actions/workflows/update-docs.yml)
+# KiTE [![CI](https://github.com/A-Good-System-for-Smart-Cities/KiTE-utils/actions/workflows/CI.yml/badge.svg?branch=main)](https://github.com/A-Good-System-for-Smart-Cities/KiTE-utils/actions/workflows/CI.yml) [![Documentation Test](https://github.com/A-Good-System-for-Smart-Cities/KiTE-utils/actions/workflows/docs.yml/badge.svg)](https://github.com/A-Good-System-for-Smart-Cities/KiTE-utils/actions/workflows/docs.yml) [![.github/workflows/update-docs.yml](https://github.com/A-Good-System-for-Smart-Cities/KiTE-utils/actions/workflows/update-docs.yml/badge.svg)](https://github.com/A-Good-System-for-Smart-Cities/KiTE-utils/actions/workflows/update-docs.yml)[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://kite-visualization-tool.streamlit.app/)
 
 ![](doc_template/logo-kite.jpg)
 
 
-## (Summary)
+## Summary
+> This package is a tool that validates and calibrates supervised classification models against bias. We hope to empower users to audit models and develop diagnostic plots that help identify and quantify bias in supervised ML models.
+
+* Explore [KiTE's User-friendly Interface](https://kite-visualization-tool.streamlit.app/)!
+* Please refer to our [documentation](https://a-good-system-for-smart-cities.github.io/kite-utils-docs/KiTE.html) for additional guidance
+
+### We welcome feedback!
+> You can submit any feedback, questions, or issues in the [Issues Tab](https://github.com/A-Good-System-for-Smart-Cities/KiTE-utils/issues) of this Repository. One of our team members will promptly respond to help you out!
+
+### Contributing Summary
 - To format code, run `black .`
 - To lint code, run `flake8 .`
 - To install requirements, run `pip install -r requirements.txt`
