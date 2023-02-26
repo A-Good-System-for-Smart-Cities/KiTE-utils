@@ -9,6 +9,13 @@
 * Explore [KiTE's User-friendly Interface](https://kite-visualization-tool.streamlit.app/)!
 * Please refer to our [documentation](https://a-good-system-for-smart-cities.github.io/kite-utils-docs/KiTE.html) for additional guidance
 
+### Let's get Started!
+Type this into your Python environment!
+```
+pip install git+https://github.com/A-Good-System-for-Smart-Cities/KiTE-utils.git
+
+```
+
 ### We welcome feedback!
 > You can submit any feedback, questions, or issues in the [Issues Tab](https://github.com/A-Good-System-for-Smart-Cities/KiTE-utils/issues) of this Repository. One of our team members will promptly respond to help you out!
 
