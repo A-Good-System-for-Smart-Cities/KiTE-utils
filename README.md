@@ -1,7 +1,8 @@
 # KiTE [![CI](https://github.com/A-Good-System-for-Smart-Cities/KiTE-utils/actions/workflows/CI.yml/badge.svg?branch=main)](https://github.com/A-Good-System-for-Smart-Cities/KiTE-utils/actions/workflows/CI.yml) [![Documentation Test](https://github.com/A-Good-System-for-Smart-Cities/KiTE-utils/actions/workflows/docs.yml/badge.svg)](https://github.com/A-Good-System-for-Smart-Cities/KiTE-utils/actions/workflows/docs.yml) [![.github/workflows/update-docs.yml](https://github.com/A-Good-System-for-Smart-Cities/KiTE-utils/actions/workflows/update-docs.yml/badge.svg)](https://github.com/A-Good-System-for-Smart-Cities/KiTE-utils/actions/workflows/update-docs.yml)[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://kite-visualization-tool.streamlit.app/)
 
-![](doc_template/logo-kite.jpg)
-
+<p align="center">
+  <img src="logo-kite.jpg" width="200" title="logo">
+</p>
 
 ## Summary
 > This package is a tool that validates and calibrates supervised classification models against bias. We hope to empower users to audit models and develop diagnostic plots that help identify and quantify bias in supervised ML models.
@@ -11,10 +12,9 @@
 
 ### Let's get Started!
 Type this into your Python environment!
-```
-pip install git+https://github.com/A-Good-System-for-Smart-Cities/KiTE-utils.git
 
-```
+    pip install git+https://github.com/A-Good-System-for-Smart-Cities/KiTE-utils.git
+
 
 ### We welcome feedback!
 > Please submit any feedback, questions, or issues in the [Issues Tab](https://github.com/A-Good-System-for-Smart-Cities/KiTE-utils/issues) of this Repository. One of our team members will promptly respond to help you out!
